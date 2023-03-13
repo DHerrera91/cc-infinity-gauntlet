@@ -8,11 +8,10 @@ TodosRouter.get("/to-dos", async function (request, response) {
   try {
     const db = await getDBConnection();
 
-    const todos = await db.all("SELECT * FROM todos");
+    const todos = await db.all(`SELECT * FROM todos `);
+    response.send({ todos });
 
     await db.close();
-
-    response.send({ todos });
   } catch (error) {
     response.status(500).send({
       message: "Something went wrong trying to get to dos",
@@ -93,7 +92,7 @@ TodosRouter.patch("/to-do/:id", async function (request, response) {
     `,
       title || todoExists.title,
       description || todoExists.description,
-      is_done !== undefined ? is_done : todoExists.todoExists,
+      is_done !== undefined ? is_done : todoExists.is_done,
       id
     );
 
